@@ -1,0 +1,1040 @@
+# ROLE
+
+Act as a senior frontend engineer, algorithms expert, UI/UX designer, accessibility specialist, testing engineer, and technical documentation writer.
+
+Build a complete, functional, responsive educational website called **GraphVista — Graph Traversal Visualizer**.
+
+Do not create merely a mockup, landing page, design preview, or static visualization.
+
+Implement the actual working application, including interactive graph creation, BFS and DFS algorithms, step-by-step animation, playback controls, graph examples, algorithm explanations, responsive layouts, testing, and comprehensive README.md documentation.
+
+The project must be easy to understand, easy to demonstrate, and suitable for an academic computer science project.
+
+Prioritize correctness, usability, clean code, and a professional visual design.
+
+Do not ask unnecessary questions. Make sensible implementation decisions and complete the application.
+
+# 1. PROJECT OVERVIEW
+
+Project name: GraphVista
+
+Tagline: See Algorithms in Action.
+
+Project type: Interactive graph algorithm visualization website.
+
+## Problem statement
+
+Graph traversal algorithms such as Breadth-First Search and Depth-First Search are fundamental concepts in computer science. Students often struggle to understand their execution because the algorithms are usually explained through static diagrams or code alone.
+
+GraphVista addresses this problem by allowing users to create graphs and watch traversal algorithms execute visually, one step at a time.
+
+## Main objective
+
+Create an educational website that helps users understand:
+
+* Graph vertices and edges
+* Directed and undirected graphs
+* Breadth-First Search (BFS)
+* Depth-First Search (DFS)
+* Visited nodes
+* Traversal order
+* BFS queues
+* DFS stacks or recursion behavior
+* Backtracking
+* Connected and unreachable nodes
+* Time complexity
+* Space complexity
+
+All core functionality must work without requiring an API key, backend, database, or internet connection after the application has loaded and its assets are available.
+
+# 2. TECH STACK
+
+Use a simple frontend-only architecture.
+
+Preferred technologies:
+
+* React
+* TypeScript
+* Vite
+* Tailwind CSS, if compatible with the scaffold
+* SVG for interactive graph rendering
+* Vitest for unit tests, if supported
+
+Use React state and small, focused utility functions.
+
+Do not add a backend, database, authentication, Gemini API, or other external services.
+
+Do not use AI to calculate traversal results. Implement BFS and DFS as real deterministic algorithms.
+
+Do not introduce a large graph library unless absolutely necessary. SVG and native browser events are sufficient for a basic interactive graph editor.
+
+Preserve a compatible existing project scaffold if one already exists.
+
+Use simple, maintainable code with clear names and appropriate TypeScript types.
+
+# 3. VISUAL DESIGN
+
+Create a polished, minimal SaaS-style educational interface.
+
+The design should feel like a professional interactive learning tool.
+
+## Design characteristics
+
+* Light theme
+* Clean white cards
+* Soft off-white background
+* Indigo or blue primary color
+* Subtle borders
+* Restrained shadows
+* Consistent spacing
+* Rounded corners
+* Readable typography
+* Clear visual hierarchy
+* Smooth but subtle transitions
+
+Suggested colors:
+
+* Background: #F8FAFC
+* Card background: #FFFFFF
+* Primary: #4F46E5
+* Primary hover: #4338CA
+* Main text: #0F172A
+* Secondary text: #64748B
+* Borders: #E2E8F0
+* Visited node: #16A34A
+* Current node: #F59E0B
+* Discovered/frontier node: #60A5FA
+* Unvisited node: #CBD5E1
+* Error: #DC2626
+
+Use a consistent design-token system.
+
+Use a readable sans-serif font such as Inter.
+
+Avoid excessive gradients, oversized headers, unnecessary animations, decorative clutter, and visual effects that interfere with understanding the algorithms.
+
+The interface must prioritize the visualization itself.
+
+# 4. APPLICATION LAYOUT
+
+Build a single-page application with these sections:
+
+1. Header
+2. Compact introduction
+3. Graph workspace
+4. Algorithm controls
+5. Traversal visualization
+6. Algorithm state panel
+7. Traversal results
+8. Complexity information
+9. Learning guide
+10. Footer
+
+The main workspace should be visible without excessive scrolling on a typical desktop screen.
+
+On smaller screens, stack the components vertically.
+
+## 4.1 Header
+
+Display:
+
+* A simple graph-related icon
+* GraphVista
+* Subtitle: Graph Traversal Visualizer
+* Navigation links for Visualizer and Learn
+
+Keep the header compact.
+
+Make the navigation responsive.
+
+## 4.2 Introduction
+
+Heading:
+
+"Explore Graphs. Understand Algorithms."
+
+Description:
+
+"Visualize BFS and DFS step by step. Create graphs, follow every traversal, and understand how graph algorithms work."
+
+Include a prominent button that scrolls to the visualizer.
+
+Keep the introduction concise.
+
+# 5. INTERACTIVE GRAPH EDITOR
+
+This is the central component of the project.
+
+Render the graph using SVG so nodes and edges remain crisp at different screen sizes.
+
+Users must be able to interact with the graph rather than only view predefined examples.
+
+## 5.1 Graph representation
+
+Use a suitable TypeScript graph model.
+
+For example:
+
+type GraphNode = {
+id: string;
+label: string;
+x: number;
+y: number;
+};
+
+type GraphEdge = {
+id: string;
+source: string;
+target: string;
+};
+
+type GraphModel = {
+nodes: GraphNode[];
+edges: GraphEdge[];
+directed: boolean;
+};
+
+Adapt the model as necessary.
+
+## 5.2 Required graph editing operations
+
+Implement:
+
+* Add a node
+* Select a node
+* Drag nodes to reposition them
+* Connect two nodes by selecting them in connection mode
+* Remove a selected node
+* Remove a selected edge
+* Clear the graph with confirmation when appropriate
+* Toggle directed and undirected graphs
+* Load an example graph
+* Reset graph positions if useful
+
+Every operation must update the actual graph data and the rendered SVG.
+
+When a node is deleted, remove its incident edges.
+
+Prevent invalid edges and accidental duplicate edges unless parallel edges are deliberately supported.
+
+Handle self-loops consistently.
+
+If self-loops are not supported, prevent them and display an understandable message.
+
+Use stable node and edge identifiers.
+
+## 5.3 Graph editor controls
+
+Provide compact, clearly labeled controls for:
+
+* Add Node
+* Connect Nodes
+* Delete Selection
+* Clear Graph
+* Directed / Undirected
+* Load Example
+
+Avoid overcrowding the interface.
+
+Group related actions together.
+
+On mobile, allow controls to wrap or stack naturally.
+
+## 5.4 Graph layout
+
+Provide sensible initial positions for newly created nodes.
+
+Keep node labels readable.
+
+Keep nodes inside the graph workspace when practical.
+
+Allow users to drag nodes to new positions.
+
+Ensure edges remain attached to their nodes while dragging.
+
+If an edge is directed, render a clear arrowhead.
+
+Ensure that selecting a node does not accidentally trigger an unrelated graph operation.
+
+## 5.5 Graph validation
+
+Handle:
+
+* Empty graphs
+* Single-node graphs
+* Graphs with disconnected components
+* Isolated nodes
+* Missing start nodes
+* Invalid connection attempts
+* Duplicate connections
+* Deleted nodes
+* Deleted edges
+
+Display clear user-facing messages instead of crashing.
+
+# 6. EXAMPLE GRAPHS
+
+Provide several predefined examples.
+
+At minimum, include:
+
+1. Simple connected graph
+2. Graph with multiple branches
+3. Graph containing a cycle
+4. Disconnected graph
+5. Directed graph
+
+Each example should have meaningful node labels.
+
+The examples should be small enough to understand visually.
+
+Loading an example should update the actual graph editor state.
+
+If the current graph has been modified, warn before discarding those changes where appropriate.
+
+Example buttons must genuinely load different graph structures.
+
+Do not use screenshots as graph examples.
+
+# 7. BFS IMPLEMENTATION
+
+Implement a correct Breadth-First Search algorithm.
+
+Use an adjacency representation derived from the current graph.
+
+For undirected graphs, add each edge in both directions.
+
+For directed graphs, respect edge direction.
+
+When the user chooses BFS:
+
+1. Require a valid start node.
+2. Initialize the visited set.
+3. Initialize the queue.
+4. Mark the start node as discovered when enqueued.
+5. Process nodes in queue order.
+6. Discover unvisited neighbors.
+7. Record traversal steps.
+8. Continue until the reachable component is exhausted.
+
+For deterministic demonstrations, use a documented and consistent neighbor-ordering policy, such as the graph's insertion order.
+
+Do not mark a node as newly discovered multiple times.
+
+The traversal must never enter an infinite loop when the graph contains cycles.
+
+## BFS state
+
+Track and display:
+
+* Current node
+* Queue contents
+* Visited nodes
+* Newly discovered nodes
+* Traversal order
+* Current step
+* Total steps
+
+The queue shown in the interface must match the algorithm's actual state.
+
+# 8. DFS IMPLEMENTATION
+
+Implement a correct Depth-First Search algorithm.
+
+Use a deterministic neighbor-ordering policy.
+
+Prefer an iterative DFS implementation using an explicit stack so the visualization can display stack contents clearly.
+
+The implementation must correctly handle:
+
+* Cycles
+* Disconnected graphs
+* Isolated nodes
+* Directed graphs
+* Undirected graphs
+* Invalid start nodes
+
+Record each meaningful execution step.
+
+For a node discovered through the traversal, update the visited state and stack consistently.
+
+If using an explicit stack, document whether nodes are marked visited when pushed or popped and implement the visualization to match that choice.
+
+When pushing multiple neighbors, account for stack order so the actual traversal follows the documented neighbor-ordering policy.
+
+## DFS state
+
+Track and display:
+
+* Current node
+* Stack contents
+* Visited nodes
+* Traversal order
+* Backtracking or exploration events where appropriate
+* Current step
+* Total steps
+
+Do not simulate DFS by merely recoloring nodes in a predetermined sequence unrelated to the actual algorithm.
+
+The graph colors and stack contents must reflect the real traversal.
+
+# 9. STEP-BY-STEP VISUALIZATION ENGINE
+
+Implement a visualization system driven by recorded algorithm steps.
+
+Separate algorithm execution from rendering and animation.
+
+A useful internal model may include:
+
+type TraversalStep = {
+index: number;
+action: string;
+currentNode: string | null;
+visited: string[];
+frontier: string[];
+traversalOrder: string[];
+description: string;
+};
+
+Extend this structure to capture the queue or stack, edge events, and other details needed by the actual implementation.
+
+Precompute the valid traversal trace when the user starts an algorithm, then let the UI navigate that trace.
+
+This approach makes backward and forward controls reliable.
+
+The graph must not be recomputed differently every time the user clicks Next.
+
+## Required playback controls
+
+Implement:
+
+* Start
+* Play
+* Pause
+* Next Step
+* Previous Step
+* Reset
+* Playback speed
+
+Playback speed options may include:
+
+* 0.5×
+* 1×
+* 1.5×
+* 2×
+
+Disable or appropriately handle controls when there are no steps to display.
+
+Prevent multiple animation timers from running simultaneously.
+
+Clean up timers when the component unmounts or the traversal changes.
+
+Pause playback when the user resets the algorithm or loads a new graph.
+
+If the graph changes during playback, invalidate the old traversal trace and require the user to run the algorithm again.
+
+Do not allow an outdated trace to be applied to a different graph.
+
+## Step descriptions
+
+At every step, show a concise explanation of what the algorithm is doing.
+
+Examples:
+
+"BFS starts at node A and adds it to the queue."
+
+"Node B is discovered and added to the queue."
+
+"DFS visits node C and explores its unvisited neighbors."
+
+"DFS backtracks because there are no remaining unvisited neighbors."
+
+Descriptions must correspond to the actual event.
+
+Avoid generic explanations that repeat identically for every step.
+
+# 10. NODE AND EDGE VISUAL STATES
+
+Use distinct, accessible states.
+
+For example:
+
+* Unvisited node: neutral gray
+* Current node: amber
+* Visited node: green
+* Discovered/frontier node: blue
+* Current traversal edge: emphasized primary color
+* Unused edge: neutral border
+
+Display a small legend explaining the colors.
+
+Do not rely on color alone.
+
+Use additional cues such as:
+
+* Node borders
+* Small labels
+* Icons where appropriate
+* Textual status descriptions
+
+Ensure text contrast remains readable.
+
+Avoid animating every graph element unnecessarily.
+
+A subtle transition when node states change is sufficient.
+
+# 11. ALGORITHM CONTROL PANEL
+
+Provide controls for:
+
+* Algorithm selection: BFS or DFS
+* Start-node selection
+* Playback speed
+* Start or run traversal
+
+The start-node selector must contain the actual current node labels.
+
+If there are no nodes, disable traversal controls and explain why.
+
+When the user changes the selected algorithm or start node, reset or invalidate the previous trace appropriately.
+
+Do not retain stale traversal results from an earlier graph.
+
+# 12. LIVE ALGORITHM STATE PANEL
+
+Display the current execution state beside the graph on desktop.
+
+On mobile, place it below the graph and playback controls.
+
+For BFS, display:
+
+* Queue
+* Visited set
+* Current node
+* Traversal order
+
+For DFS, display:
+
+* Stack
+* Visited set
+* Current node
+* Traversal order
+* Backtracking information when available
+
+Update the panel on every step.
+
+Do not display hardcoded example state while another graph is being traversed.
+
+If the current step has no current node, display a clear placeholder.
+
+Use compact badges or chips for queue and stack elements.
+
+Allow these elements to wrap on narrow screens.
+
+# 13. TRAVERSAL RESULTS
+
+After a traversal finishes, display:
+
+* Algorithm used
+* Starting node
+* Traversal order
+* Number of nodes visited
+* Number of nodes unreachable from the start
+* Completion status
+
+Distinguish between all graph nodes and nodes reachable from the chosen start node.
+
+For a disconnected graph, report that the standard traversal visits only nodes reachable from the chosen start node.
+
+Do not automatically jump to disconnected components unless a separate full-graph traversal feature is explicitly provided.
+
+If there are unreachable nodes, list them.
+
+Provide a button to run another traversal.
+
+# 14. COMPLEXITY ANALYSIS
+
+Create a compact educational card that explains the complexity of BFS and DFS.
+
+For adjacency-list implementations:
+
+BFS:
+
+* Time complexity: O(V + E)
+* Auxiliary space complexity: O(V)
+
+DFS:
+
+* Time complexity: O(V + E)
+* Auxiliary space complexity: O(V)
+
+Explain:
+
+* V represents the number of vertices.
+* E represents the number of edges.
+* The time bound assumes the usual adjacency-list representation and a traversal that processes each reachable vertex and edge a constant number of times.
+* The O(V) auxiliary-space bound includes visited-state and queue or stack storage in the conventional analysis.
+
+Explain that implementations using an adjacency matrix may have different time complexity, commonly O(V²).
+
+Keep the explanation beginner-friendly.
+
+Do not claim that every graph representation has identical complexity.
+
+# 15. LEARNING GUIDE
+
+Include a concise section explaining:
+
+* What a graph is
+* Vertices and edges
+* Directed versus undirected graphs
+* What BFS does
+* What DFS does
+* How a queue works
+* How a stack works
+* Why visited tracking is necessary
+* Why traversal order can vary depending on neighbor ordering
+* Time and space complexity
+
+Include a comparison table.
+
+For example:
+
+| Feature         | BFS                                       | DFS                                         |
+| --------------- | ----------------------------------------- | ------------------------------------------- |
+| Main structure  | Queue                                     | Stack                                       |
+| Exploration     | Level by level                            | Deep before backtracking                    |
+| Shortest path   | Finds shortest paths in unweighted graphs | Does not generally guarantee shortest paths |
+| Time complexity | O(V + E)                                  | O(V + E)                                    |
+| Auxiliary space | O(V)                                      | O(V)                                        |
+
+Clarify that BFS provides shortest paths in terms of edge count for unweighted graphs when implemented correctly.
+
+Use examples and simple language.
+
+# 16. RESPONSIVE DESIGN — CRITICAL REQUIREMENT
+
+The website must adapt correctly to desktops, laptops, tablets, and mobile devices.
+
+Do not design only for desktop and shrink it later.
+
+Use mobile-first responsive layouts.
+
+Test these viewport widths:
+
+* 320px
+* 360px
+* 375px
+* 390px
+* 430px
+* 768px
+* 1024px
+* 1280px
+* 1440px
+
+## Desktop behavior
+
+On sufficiently wide screens:
+
+* Show the graph canvas as the primary workspace.
+* Place the algorithm state panel beside it.
+* Keep playback controls accessible.
+* Use a balanced content width.
+* Prevent the learning guide from becoming excessively wide.
+
+## Tablet behavior
+
+* Reduce spacing.
+* Allow the state panel to stack below the graph when necessary.
+* Allow controls to wrap.
+* Preserve usable node and edge interactions.
+
+## Mobile behavior
+
+* Use a single-column layout.
+* Stack graph, controls, and state information.
+* Keep important buttons large enough to tap.
+* Use compact section headings.
+* Make the SVG graph responsive.
+* Ensure the graph remains usable in portrait orientation.
+* Avoid squeezing the graph and state panel side by side.
+* Allow labels and badges to wrap.
+* Keep the header compact.
+
+## Non-negotiable responsive rules
+
+1. No unintended horizontal page scrolling.
+2. No overlapping text or controls.
+3. No clipped cards.
+4. No fixed-width page containers that exceed the viewport.
+5. No absolute positioning for the main layout.
+6. Graph SVG must fit its container.
+7. Node positions must scale or be transformed consistently with the SVG viewBox.
+8. Pointer interactions must work on touch devices.
+9. Edge endpoints must remain attached during node dragging.
+10. The page must not scroll unexpectedly while a user drags a node.
+11. Controls must wrap or stack naturally.
+12. No essential information should be available only through hover.
+13. Modals and dropdowns must fit within the viewport.
+14. Long node labels must not break the layout.
+15. The legend must remain readable.
+16. The graph must not become unusably small on narrow screens.
+17. Resizing the viewport must not corrupt graph coordinates.
+18. The app must work in portrait and landscape orientations.
+
+Use SVG viewBox and preserveAspectRatio appropriately.
+
+If using a fixed internal graph coordinate system, implement a consistent coordinate transformation for pointer events.
+
+Do not simply scale the SVG visually while calculating drag positions in a different coordinate system.
+
+Handle pointer events carefully and clean them up correctly.
+
+If touch gestures interfere with page scrolling, use a deliberate touch-action strategy scoped to the graph interaction area rather than disabling page scrolling everywhere.
+
+Test actual rendered behavior rather than assuming CSS is responsive.
+
+# 17. ACCESSIBILITY
+
+Implement:
+
+* Semantic HTML
+* Accessible control labels
+* Keyboard focus indicators
+* Sufficient text contrast
+* Keyboard-accessible buttons
+* Screen-reader-friendly status messages
+* Reduced-motion support
+* A textual legend for graph states
+* Clear selected-node and selected-edge indicators
+
+Provide accessible alternatives for essential actions where practical.
+
+Ensure algorithm information is not communicated through color alone.
+
+# 18. ERROR HANDLING AND EDGE CASES
+
+Handle these cases gracefully:
+
+* Empty graph
+* One-node graph
+* No selected start node
+* Disconnected graph
+* Graph containing cycles
+* Directed graph with one-way connections
+* Deleting a selected node
+* Deleting an edge
+* Clearing the graph during playback
+* Loading an example during playback
+* Running an algorithm repeatedly
+* Switching from BFS to DFS
+* Changing the graph after traversal
+* Dragging nodes near canvas boundaries
+* Small viewport sizes
+
+Prevent stale playback timers and stale traversal traces.
+
+Display understandable messages.
+
+The application must never crash because the graph is empty or the selected node has been deleted.
+
+# 19. STATE MANAGEMENT AND ARCHITECTURE
+
+Keep the architecture simple.
+
+Separate:
+
+1. Graph data and graph-editing logic
+2. BFS algorithm
+3. DFS algorithm
+4. Traversal-step generation
+5. Playback state
+6. SVG graph rendering
+7. Algorithm state panel
+8. Complexity information
+9. Reusable UI controls
+
+Use pure functions for BFS, DFS, and traversal-trace generation where practical.
+
+Avoid unnecessary global state management libraries.
+
+Use TypeScript types for graph nodes, edges, algorithm settings, and traversal steps.
+
+Keep algorithm logic independent of React rendering.
+
+Ensure algorithm correctness can be tested without rendering the entire website.
+
+# 20. TESTING
+
+Create unit tests for the algorithm functions and graph utilities.
+
+At minimum, test the following.
+
+## Test A: Simple connected graph
+
+Confirm that BFS and DFS visit every reachable node exactly once.
+
+## Test B: Graph containing a cycle
+
+Confirm that the algorithms terminate and do not repeatedly visit the same node.
+
+## Test C: Disconnected graph
+
+Confirm that traversal visits only nodes reachable from the selected start node.
+
+## Test D: Single-node graph
+
+Confirm that the traversal returns that node.
+
+## Test E: Empty graph
+
+Confirm that the application handles the absence of a start node.
+
+## Test F: Directed graph
+
+Confirm that edges are followed only in their permitted direction.
+
+## Test G: Graph modification
+
+Confirm that deleting a node removes its incident edges.
+
+## Test H: Step navigation
+
+Confirm that Next Step, Previous Step, Reset, Play, and Pause update the correct trace position.
+
+## Test I: Graph replacement
+
+Confirm that loading another graph during playback invalidates the old traversal trace.
+
+## Test J: Responsive UI
+
+Check the interface at the required viewport widths for horizontal overflow, clipped controls, overlapping panels, and unusable graph interactions.
+
+For deterministic graph tests, specify the neighbor-ordering policy and expected traversal order.
+
+Do not assert one universal traversal order for graphs whose neighbor ordering is undefined.
+
+Run the available build and test commands.
+
+Fix errors that can be reproduced with the available tools.
+
+Never claim tests have passed if they were not executed.
+
+# 21. README.MD DOCUMENTATION
+
+Create a comprehensive, professional README.md in the project root.
+
+The README must accurately reflect the actual implementation.
+
+Include these sections:
+
+1. Project title
+2. Introduction
+3. Problem statement
+4. Project objectives
+5. Features
+6. Technology stack
+7. System requirements
+8. Installation instructions
+9. Development setup
+10. Project folder structure
+11. File and directory descriptions
+12. Architecture overview
+13. Architecture flowchart
+14. Graph data model
+15. BFS algorithm explanation
+16. DFS algorithm explanation
+17. Traversal-step generation
+18. Playback system
+19. Graph editing workflow
+20. Complexity analysis
+21. UI/UX design
+22. Responsive design
+23. Accessibility
+24. Testing instructions
+25. Build instructions
+26. Deployment instructions
+27. Limitations
+28. Future improvements
+29. Academic project abstract
+30. Conclusion
+31. License information
+
+## Folder tree
+
+Provide a real folder tree matching the generated repository.
+
+Use a structure similar to this only if it reflects the actual files:
+
+```text
+graphvista/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Header.tsx
+│   │   ├── GraphCanvas.tsx
+│   │   ├── AlgorithmControls.tsx
+│   │   ├── PlaybackControls.tsx
+│   │   ├── TraversalStatePanel.tsx
+│   │   └── ...
+│   ├── algorithms/
+│   │   ├── bfs.ts
+│   │   ├── dfs.ts
+│   │   └── ...
+│   ├── data/
+│   │   └── exampleGraphs.ts
+│   ├── types/
+│   │   └── graph.ts
+│   ├── utils/
+│   │   └── ...
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── ...
+├── tests/
+├── package.json
+├── README.md
+└── ...
+```
+
+Do not create empty files just to match the example.
+
+## Architecture flowchart
+
+Include a Mermaid diagram similar to:
+
+```mermaid
+flowchart TD
+    A[User Creates or Loads Graph] --> B[Update Graph Model]
+    B --> C[Select BFS or DFS]
+    C --> D[Select Start Node]
+    D --> E[Generate Traversal Trace]
+    E --> F[Record Algorithm Steps]
+    F --> G[Playback Controller]
+    G --> H[Render Current Graph State]
+    G --> I[Update Queue or Stack]
+    G --> J[Update Traversal Order]
+    H --> K[Display Results]
+    I --> K
+    J --> K
+```
+
+Adapt the diagram to the real implementation.
+
+## BFS flowchart
+
+Include a Mermaid flowchart showing initialization, queue processing, neighbor discovery, and termination.
+
+## DFS flowchart
+
+Include a Mermaid flowchart showing stack initialization, node processing, neighbor exploration, and termination.
+
+## Setup commands
+
+Provide the actual commands supported by the generated package.json.
+
+For example, use npm install and npm run dev only if those scripts exist.
+
+Document the actual build and test scripts.
+
+## Academic project summary
+
+Include a concise abstract describing the educational problem, the visualization approach, the implemented algorithms, and the expected learning outcomes.
+
+Do not invent the student's name, college, department, or supervisor.
+
+## License
+
+Do not claim a specific open-source license unless the corresponding license file exists.
+
+Explain that a license can be selected if one has not yet been assigned.
+
+The README must be sufficient for another student to understand, run, test, and maintain the project.
+
+# 22. PERFORMANCE AND CODE QUALITY
+
+Keep the application lightweight.
+
+Avoid unnecessary dependencies.
+
+Use stable React keys.
+
+Avoid regenerating the entire traversal trace on every animation frame.
+
+Memoize expensive derived calculations only when needed.
+
+Keep event handlers and timers properly managed.
+
+Ensure dragging nodes does not unnecessarily rebuild unrelated UI state.
+
+Keep the code readable and logically organized.
+
+Do not sacrifice algorithm correctness for visual effects.
+
+# 23. FINAL COMPLETION CHECKLIST
+
+Before considering the project finished:
+
+* Verify that the website starts.
+* Verify that the graph is visible.
+* Verify that nodes can be added.
+* Verify that edges can be created.
+* Verify that nodes can be dragged.
+* Verify that graph examples load.
+* Verify that BFS executes correctly.
+* Verify that DFS executes correctly.
+* Verify that queue and stack displays match the algorithm.
+* Verify that traversal order is correct.
+* Verify that backward and forward stepping work.
+* Verify that play and pause work.
+* Verify that reset works.
+* Verify that playback stops when the graph changes.
+* Verify that disconnected nodes are handled correctly.
+* Verify that directed edges are respected.
+* Verify that complexity information is accurate.
+* Verify that mobile controls remain usable.
+* Check for horizontal overflow.
+* Run the available tests.
+* Run the production build.
+* Fix discovered errors.
+* Verify the README against the actual implementation.
+* Ensure no decorative control is nonfunctional.
+
+If browser automation is available, inspect the rendered application at desktop and mobile sizes.
+
+If a particular test cannot be run in the current environment, disclose that limitation.
+
+# 24. FINAL DELIVERABLE
+
+Produce the complete GraphVista website with:
+
+* Fully working interactive graph editor
+* BFS visualization
+* DFS visualization
+* Step-by-step traversal
+* Play, pause, next, previous, and reset controls
+* Playback speed selection
+* Live queue and stack
+* Visited-node tracking
+* Traversal order
+* Predefined example graphs
+* Directed and undirected graph support
+* Graph editing and deletion
+* Complexity explanations
+* Learning guide
+* Responsive mobile-first interface
+* Accessible controls
+* Unit tests where supported
+* Complete README.md
+* Accurate folder structure
+* Mermaid architecture and algorithm flowcharts
+* Installation and deployment instructions
+
+At the end, provide a concise implementation report containing:
+
+1. Implemented features
+2. Actual folder structure
+3. Commands to run the project
+4. Tests and builds actually performed
+5. Any remaining limitations
+
+Start by inspecting the available project environment, then implement the complete application. Do not stop after writing a plan.

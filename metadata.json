@@ -1,0 +1,6 @@
+{
+  "name": "GraphVista — Graph Traversal Visualizer",
+  "description": "Interactive educational tool to visualize Breadth-First Search (BFS) and Depth-First Search (DFS) algorithms step by step with custom graph editing, queue/stack state inspection, and complexity analysis.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
